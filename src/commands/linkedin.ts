@@ -26,9 +26,9 @@ export function registerLinkedIn(program: Command, getClient: () => CreatorCrawl
     .action((url: string) => run(() => getClient().linkedin.post({ url })))
 
   linkedin
-    .command('ads <query>')
-    .description('Search the LinkedIn Ad Library')
-    .action((query: string) => run(() => getClient().linkedin.adsSearch({ query })))
+    .command('ads <keyword>')
+    .description('Search the LinkedIn Ad Library by keyword (or pass a company name)')
+    .action((keyword: string) => run(() => getClient().linkedin.adsSearch({ keyword })))
 
   linkedin
     .command('ad <url>')

@@ -7,7 +7,7 @@ export function registerYoutube(program: Command, getClient: () => CreatorCrawl)
 
   youtube
     .command('channel <handle>')
-    .description('Get YouTube channel by handle')
+    .description('Get a YouTube channel by handle (or pass an @handle or channelId)')
     .action((handle: string) => run(() => getClient().youtube.channel({ handle })))
 
   youtube
@@ -26,11 +26,6 @@ export function registerYoutube(program: Command, getClient: () => CreatorCrawl)
     .action((url: string) => run(() => getClient().youtube.video({ url })))
 
   youtube
-    .command('search <query>')
-    .description('Search YouTube by keyword')
-    .action((query: string) => run(() => getClient().youtube.search({ query })))
-
-  youtube
     .command('transcript <url>')
     .description('Get the transcript of a YouTube video')
     .action((url: string) => run(() => getClient().youtube.transcript({ url })))
@@ -41,7 +36,22 @@ export function registerYoutube(program: Command, getClient: () => CreatorCrawl)
     .action((url: string) => run(() => getClient().youtube.comments({ url })))
 
   youtube
-    .command('playlist <url>')
-    .description('Get YouTube playlist contents')
-    .action((url: string) => run(() => getClient().youtube.playlist({ url })))
+    .command('search <query>')
+    .description('Search YouTube by keyword')
+    .action((query: string) => run(() => getClient().youtube.search({ query })))
+
+  youtube
+    .command('search-hashtag <hashtag>')
+    .description('Search YouTube by hashtag')
+    .action((hashtag: string) => run(() => getClient().youtube.searchHashtag({ hashtag })))
+
+  youtube
+    .command('playlist <playlist_id>')
+    .description('Get YouTube playlist contents by playlist ID')
+    .action((playlist_id: string) => run(() => getClient().youtube.playlist({ playlist_id })))
+
+  youtube
+    .command('trending-shorts')
+    .description('Currently trending YouTube shorts')
+    .action(() => run(() => getClient().youtube.trendingShorts()))
 }

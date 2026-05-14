@@ -1,6 +1,6 @@
 {
   "name": "creatorcrawl",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Official CLI for CreatorCrawl. Scrape TikTok, Instagram, YouTube, LinkedIn, Twitter/X, and Reddit profiles, posts, comments, transcripts, ads, and trending data from your terminal or shell scripts.",
   "license": "MIT",
   "author": "CreatorCrawl <support@creatorcrawl.com>",
@@ -45,7 +45,7 @@
     "node": ">=18"
   },
   "dependencies": {
-    "@creatorcrawl/sdk": "^0.1.0",
+    "@creatorcrawl/sdk": "^0.2.0",
     "commander": "^12.1.0"
   },
   "devDependencies": {

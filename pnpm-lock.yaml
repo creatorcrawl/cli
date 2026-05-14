@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@creatorcrawl/sdk':
-        specifier: ^0.1.0
-        version: 0.1.0
+        specifier: ^0.2.0
+        version: 0.2.0
       commander:
         specifier: ^12.1.0
         version: 12.1.0
@@ -27,8 +27,8 @@ importers:
 
 packages:
 
-  '@creatorcrawl/sdk@0.1.0':
-    resolution: {integrity: sha512-P4MhXGaSe4wwazsTRDAvtlP3gYgliBUe9QdSmqipfGhk2Bjq5mHf579dAdS53DQFAOVmVsoQiUbewXaAbbK1Kg==}
+  '@creatorcrawl/sdk@0.2.0':
+    resolution: {integrity: sha512-s23w7oSRdFTQWbAkC5pdQgp3ogenw6QWkCmbtCpekiUFBdDcx83aKsmc9imt56X+kg+lL9ogI7/hTK4wjzG2iw==}
     engines: {node: '>=18'}
 
   '@esbuild/aix-ppc64@0.27.7':
@@ -700,7 +700,7 @@ packages:
 
 snapshots:
 
-  '@creatorcrawl/sdk@0.1.0': {}
+  '@creatorcrawl/sdk@0.2.0': {}
 
   '@esbuild/aix-ppc64@0.27.7':
     optional: true
