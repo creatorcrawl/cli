@@ -1,0 +1,115 @@
+# creatorcrawl CLI
+
+Official command-line interface for [CreatorCrawl](https://creatorcrawl.com). Scrape **TikTok, Instagram, YouTube, LinkedIn, Twitter/X, and Reddit** from your terminal or shell scripts.
+
+```bash
+npx creatorcrawl tiktok profile khaby.lame
+npx creatorcrawl youtube transcript https://youtu.be/...
+npx creatorcrawl linkedin company https://www.linkedin.com/company/openai
+```
+
+## Install
+
+Run instantly without installing:
+
+```bash
+npx creatorcrawl <command>
+```
+
+Or install globally:
+
+```bash
+npm install -g creatorcrawl
+# or
+pnpm add -g creatorcrawl
+```
+
+## Authenticate
+
+Get a free API key at [creatorcrawl.com](https://creatorcrawl.com) — **250 credits free on signup, no card required.**
+
+Then either:
+
+```bash
+export CREATORCRAWL_API_KEY=cc_...
+creatorcrawl tiktok profile khaby.lame
+```
+
+Or pass it per command:
+
+```bash
+creatorcrawl --api-key cc_... tiktok profile khaby.lame
+```
+
+## Commands
+
+```
+creatorcrawl tiktok    profile|videos|video|transcript|search|users|comments
+creatorcrawl instagram profile|posts|post|reels|comments|transcript
+creatorcrawl youtube   channel|videos|shorts|video|search|transcript|comments|playlist
+creatorcrawl linkedin  profile|company|company-posts|post|ads|ad
+creatorcrawl twitter   profile|tweet|tweets|transcript|community|community-tweets
+creatorcrawl reddit    search|subreddit|subreddit-posts|subreddit-search|comments
+```
+
+Run `creatorcrawl <platform> --help` for subcommand details.
+
+## Output
+
+Default: compact JSON (greppable, pipeable).
+
+```bash
+creatorcrawl tiktok profile khaby.lame | jq '.user.uniqueId, .stats.followerCount'
+```
+
+Pretty-print:
+
+```bash
+creatorcrawl --pretty tiktok profile khaby.lame
+```
+
+## Examples
+
+```bash
+# Profile
+creatorcrawl tiktok profile stoolpresidente
+
+# Transcript a video and pipe to a file
+creatorcrawl youtube transcript https://youtu.be/dQw4w9WgXcQ > transcript.json
+
+# Search and extract top-5 channels
+creatorcrawl youtube search "ai tools" | jq '.items[:5]'
+
+# LinkedIn ad library lookup
+creatorcrawl linkedin ads stripe
+
+# Loop over a list of handles
+for h in stoolpresidente khaby.lame zachking; do
+  creatorcrawl tiktok profile "$h"
+done
+
+# Use in CI / scripts
+CREATORCRAWL_API_KEY=$NPM_TOKEN \
+  creatorcrawl reddit subreddit-posts ProgrammerHumor
+```
+
+## Configuration
+
+| Flag | Env var | Description |
+|---|---|---|
+| `-k`, `--api-key <key>` | `CREATORCRAWL_API_KEY` | Your CreatorCrawl API key |
+| `--pretty` | — | Pretty-print JSON output (default: compact) |
+
+## Companion packages
+
+- **TypeScript SDK:** [`@creatorcrawl/sdk`](https://www.npmjs.com/package/@creatorcrawl/sdk) — for code workflows
+- **MCP server:** [`@creatorcrawl/mcp`](https://www.npmjs.com/package/@creatorcrawl/mcp) — for AI agents (Claude, Cursor, Windsurf)
+- **Agent Skill:** [`creatorcrawl/creatorcrawl-skill`](https://github.com/creatorcrawl/creatorcrawl-skill) — teaches agents how to use CreatorCrawl
+
+## Pricing
+
+Pay-as-you-go credits starting at $29 for 5,000 calls. Full pricing at [creatorcrawl.com/#pricing](https://creatorcrawl.com/#pricing).
+
+## License
+
+MIT
