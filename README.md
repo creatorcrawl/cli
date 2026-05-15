@@ -1,5 +1,7 @@
 # creatorcrawl CLI
 
+> **0.3 returns the new canonical response shape — see the SDK changelog for details.**
+
 Official command-line interface for [CreatorCrawl](https://creatorcrawl.com). Scrape **TikTok, Instagram, YouTube, LinkedIn, Twitter/X, and Reddit** from your terminal or shell scripts.
 
 ```bash
@@ -58,8 +60,26 @@ Run `creatorcrawl <platform> --help` for subcommand details.
 
 Default: compact JSON (greppable, pipeable).
 
+All responses use a unified envelope: `{ data, page?, meta }`. `data` holds the canonical record (`Creator`, `Post`, `Comment`, or a list of these). `meta` always includes `platform` and `fetched_at`.
+
 ```bash
-creatorcrawl tiktok profile khaby.lame | jq '.user.uniqueId, .stats.followerCount'
+creatorcrawl tiktok profile khaby.lame | jq '.data.handle, .data.follower_count'
+```
+
+Sample response:
+
+```json
+{
+  "data": {
+    "handle": "khaby.lame",
+    "follower_count": 162000000,
+    "platform": "tiktok"
+  },
+  "meta": {
+    "platform": "tiktok",
+    "fetched_at": "2026-05-15T10:00:00Z"
+  }
+}
 ```
 
 Pretty-print:
@@ -78,7 +98,7 @@ creatorcrawl tiktok profile stoolpresidente
 creatorcrawl youtube transcript https://youtu.be/dQw4w9WgXcQ > transcript.json
 
 # Search and extract top-5 channels
-creatorcrawl youtube search "ai tools" | jq '.items[:5]'
+creatorcrawl youtube search "ai tools" | jq '.data[:5]'
 
 # LinkedIn ad library lookup
 creatorcrawl linkedin ads stripe
