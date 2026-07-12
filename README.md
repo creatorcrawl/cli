@@ -36,20 +36,32 @@ pnpm add -g creatorcrawl
 
 ## Authenticate
 
-Get a free API key at [creatorcrawl.com](https://creatorcrawl.com) — **250 credits free on signup, no card required.**
+Get a free API key at [creatorcrawl.com](https://creatorcrawl.com) — **250 credits free on signup, no card required.** Then save it with a hidden prompt:
+
+```bash
+creatorcrawl auth login
+```
+
+The installer prompts for the key automatically when run in a terminal. For agents and CI, pass it non-interactively during installation:
+
+```bash
+curl -fsSL https://creatorcrawl.com/install.sh | CREATORCRAWL_API_KEY="sk_live_..." sh
+```
 
 Then either:
 
 ```bash
-export CREATORCRAWL_API_KEY=cc_...
+export CREATORCRAWL_API_KEY=sk_live_...
 creatorcrawl tiktok profile khaby.lame
 ```
 
 Or pass it per command:
 
 ```bash
-creatorcrawl --api-key cc_... tiktok profile khaby.lame
+creatorcrawl --api-key sk_live_... tiktok profile khaby.lame
 ```
+
+Use `creatorcrawl auth status --json` to check authentication and `creatorcrawl auth logout` to remove the saved credential.
 
 ## Commands
 

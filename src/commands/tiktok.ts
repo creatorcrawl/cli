@@ -1,5 +1,6 @@
 import type { CreatorCrawl } from '@creatorcrawl/sdk'
 import type { Command } from 'commander'
+import { normalizeTikTokHandle } from '../handles'
 import { run } from '../index'
 
 export function registerTiktok(program: Command, getClient: () => CreatorCrawl): void {
@@ -8,12 +9,16 @@ export function registerTiktok(program: Command, getClient: () => CreatorCrawl):
   tiktok
     .command('profile <handle>')
     .description('Get a TikTok profile by handle')
-    .action((handle: string) => run(() => getClient().tiktok.profile({ handle })))
+    .action((handle: string) =>
+      run(() => getClient().tiktok.profile({ handle: normalizeTikTokHandle(handle) })),
+    )
 
   tiktok
     .command('videos <handle>')
     .description("Get a TikTok user's recent videos")
-    .action((handle: string) => run(() => getClient().tiktok.profileVideos({ handle })))
+    .action((handle: string) =>
+      run(() => getClient().tiktok.profileVideos({ handle: normalizeTikTokHandle(handle) })),
+    )
 
   tiktok
     .command('video <url>')
@@ -33,22 +38,30 @@ export function registerTiktok(program: Command, getClient: () => CreatorCrawl):
   tiktok
     .command('creator-transcripts <handle>')
     .description("Bulk transcripts of a creator's recent videos")
-    .action((handle: string) => run(() => getClient().tiktok.creatorTranscripts({ handle })))
+    .action((handle: string) =>
+      run(() => getClient().tiktok.creatorTranscripts({ handle: normalizeTikTokHandle(handle) })),
+    )
 
   tiktok
     .command('followers <handle>')
     .description("Get a user's followers")
-    .action((handle: string) => run(() => getClient().tiktok.followers({ handle })))
+    .action((handle: string) =>
+      run(() => getClient().tiktok.followers({ handle: normalizeTikTokHandle(handle) })),
+    )
 
   tiktok
     .command('following <handle>')
     .description("Get accounts a user follows")
-    .action((handle: string) => run(() => getClient().tiktok.following({ handle })))
+    .action((handle: string) =>
+      run(() => getClient().tiktok.following({ handle: normalizeTikTokHandle(handle) })),
+    )
 
   tiktok
     .command('live <handle>')
     .description("Get a user's live stream info")
-    .action((handle: string) => run(() => getClient().tiktok.live({ handle })))
+    .action((handle: string) =>
+      run(() => getClient().tiktok.live({ handle: normalizeTikTokHandle(handle) })),
+    )
 
   tiktok
     .command('song <clipId>')

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.2
+
+- Added `auth login`, `auth status`, and `auth logout` with secure local credential storage.
+- Added non-interactive authentication through `CREATORCRAWL_API_KEY` during installation.
+- Accepted TikTok profile URLs and `@handles` anywhere a TikTok handle is expected.
+
 ## 0.3.1
 
 - Fixed the published executable containing duplicate shebang lines.

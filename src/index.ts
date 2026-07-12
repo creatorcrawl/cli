@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import { CreatorCrawl, CreatorCrawlError } from '@creatorcrawl/sdk'
 import { Command } from 'commander'
+import { readStoredApiKey, registerAuth } from './auth'
 import { registerInstagram } from './commands/instagram'
 import { registerLinkedIn } from './commands/linkedin'
 import { registerReddit } from './commands/reddit'
@@ -15,13 +16,16 @@ program
   .description(
     'Scrape TikTok, Instagram, YouTube, LinkedIn, Twitter/X, and Reddit from your terminal.',
   )
-  .version('0.3.1')
+  .version('0.3.2')
   .option('-k, --api-key <key>', 'CreatorCrawl API key (or set CREATORCRAWL_API_KEY env)')
   .option('--pretty', 'Pretty-print JSON output (default: compact)')
 
 function getClient(): CreatorCrawl {
   const opts = program.opts()
-  const apiKey = (opts.apiKey as string | undefined) ?? process.env.CREATORCRAWL_API_KEY
+  const apiKey =
+    (opts.apiKey as string | undefined) ??
+    process.env.CREATORCRAWL_API_KEY ??
+    readStoredApiKey()
   if (!apiKey) {
     console.error('Error: API key required. Pass --api-key or set CREATORCRAWL_API_KEY.')
     console.error('Get a free key (250 credits) at https://creatorcrawl.com')
@@ -51,6 +55,7 @@ export async function run(fn: () => Promise<unknown>): Promise<void> {
   }
 }
 
+registerAuth(program)
 registerTiktok(program, getClient)
 registerInstagram(program, getClient)
 registerYoutube(program, getClient)
@@ -59,6 +64,6 @@ registerTwitter(program, getClient)
 registerReddit(program, getClient)
 
 program.parseAsync().catch((err) => {
-  console.error(err)
+  console.error(err instanceof Error ? `Error: ${err.message}` : 'Unknown error')
   process.exit(1)
 })
