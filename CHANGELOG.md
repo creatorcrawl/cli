@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.0
+
+- Replaced interactive API-key paste with OAuth Authorization Code + PKCE browser login.
+- Added automatic access-token refresh and secure macOS Keychain storage.
+- Kept `CREATORCRAWL_API_KEY` and `--api-key` for agents and CI.
+
 ## 0.3.4
 
 - Corrected the credential validation endpoint used by CLI authentication.

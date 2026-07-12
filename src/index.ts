@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { CreatorCrawl, CreatorCrawlError } from '@creatorcrawl/sdk'
 import { Command } from 'commander'
-import { readStoredApiKey, registerAuth } from './auth'
+import { registerAuth, resolveCredential } from './auth'
 import { registerInstagram } from './commands/instagram'
 import { registerLinkedIn } from './commands/linkedin'
 import { registerReddit } from './commands/reddit'
@@ -16,22 +16,23 @@ program
   .description(
     'Scrape TikTok, Instagram, YouTube, LinkedIn, Twitter/X, and Reddit from your terminal.',
   )
-  .version('0.3.4')
+  .version('0.4.0')
   .option('-k, --api-key <key>', 'CreatorCrawl API key (or set CREATORCRAWL_API_KEY env)')
   .option('--pretty', 'Pretty-print JSON output (default: compact)')
 
-function getClient(): CreatorCrawl {
+async function getClient(): Promise<CreatorCrawl> {
   const opts = program.opts()
-  const apiKey =
-    (opts.apiKey as string | undefined) ??
-    process.env.CREATORCRAWL_API_KEY ??
-    readStoredApiKey()
-  if (!apiKey) {
-    console.error('Error: API key required. Pass --api-key or set CREATORCRAWL_API_KEY.')
-    console.error('Get a free key (250 credits) at https://creatorcrawl.com')
+  const explicitApiKey = opts.apiKey as string | undefined
+  const credential = explicitApiKey ? { apiKey: explicitApiKey, source: 'environment' as const } : await resolveCredential()
+  if (!credential) {
+    console.error('Error: authentication required. Run creatorcrawl auth login.')
     process.exit(1)
   }
-  return new CreatorCrawl({ apiKey })
+  return new CreatorCrawl(
+    credential.accessToken
+      ? { accessToken: credential.accessToken }
+      : { apiKey: credential.apiKey },
+  )
 }
 
 export function output(data: unknown): void {

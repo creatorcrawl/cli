@@ -36,19 +36,19 @@ pnpm add -g creatorcrawl
 
 ## Authenticate
 
-Get a free API key at [creatorcrawl.com](https://creatorcrawl.com) — **250 credits free on signup, no card required.** Then save it with a hidden prompt:
+For interactive use, sign in through CreatorCrawl OAuth:
 
 ```bash
 creatorcrawl auth login
 ```
 
-The installer prompts for the key automatically when run in a terminal. For agents and CI, pass it non-interactively during installation:
+The CLI opens your browser, uses Authorization Code + PKCE, stores OAuth credentials in macOS Keychain when available, and refreshes access automatically. For agents and CI, pass an API key non-interactively during installation:
 
 ```bash
 curl -fsSL https://creatorcrawl.com/install.sh | CREATORCRAWL_API_KEY="sk_live_..." sh
 ```
 
-Then either:
+API keys remain supported for automation:
 
 ```bash
 export CREATORCRAWL_API_KEY=sk_live_...
