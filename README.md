@@ -18,7 +18,7 @@ Install with the hosted script on macOS or Linux:
 curl -fsSL https://creatorcrawl.com/install.sh | sh
 ```
 
-The script downloads the self-contained release executable to `~/.local/bin/creatorcrawl` without requiring `sudo` or npm. It requires Node.js 18 or newer. Override `CREATORCRAWL_VERSION` or `CREATORCRAWL_BIN_DIR` when needed.
+The script installs both the self-contained CLI and the agent-agnostic CreatorCrawl skill. It writes the CLI to `~/.local/bin/creatorcrawl` without requiring `sudo`. Node.js 18 or newer is required. Override `CREATORCRAWL_VERSION` or `CREATORCRAWL_BIN_DIR` when needed.
 
 Run instantly without installing:
 
