@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.3
+
+- Made interactive `auth login` always prompt instead of silently reusing an environment key.
+- Validated credentials without consuming credits before saving them or reporting authenticated status.
+- Reported when `CREATORCRAWL_API_KEY` overrides a saved credential.
+
 ## 0.3.2
 
 - Added `auth login`, `auth status`, and `auth logout` with secure local credential storage.

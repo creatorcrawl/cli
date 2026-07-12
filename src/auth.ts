@@ -68,6 +68,15 @@ function validateApiKey(apiKey: string): void {
   }
 }
 
+async function verifyApiKey(apiKey: string): Promise<void> {
+  const response = await fetch('https://app.creatorcrawl.com/api/auth/validate-key', {
+    headers: { 'x-api-key': apiKey },
+  })
+  if (!response.ok) {
+    throw new Error(response.status === 403 ? 'Invalid CreatorCrawl API key.' : `Authentication check failed (${response.status}).`)
+  }
+}
+
 export function registerAuth(program: Command): void {
   const auth = program.command('auth').description('Manage CLI authentication')
 
@@ -82,10 +91,15 @@ export function registerAuth(program: Command): void {
         console.log('Create or copy an API key from https://app.creatorcrawl.com/api-keys')
         openApiKeysPage()
       }
-      const apiKey = apiKeyOption ?? process.env.CREATORCRAWL_API_KEY ?? (await promptForApiKey())
+      const apiKey = apiKeyOption ?? (await promptForApiKey())
       validateApiKey(apiKey)
+      await verifyApiKey(apiKey)
       await saveApiKey(apiKey)
       console.log('CreatorCrawl authentication saved.')
+      if (process.env.CREATORCRAWL_API_KEY && process.env.CREATORCRAWL_API_KEY !== apiKey) {
+        console.log('Warning: CREATORCRAWL_API_KEY is still set and overrides the saved credential.')
+        console.log('Run: unset CREATORCRAWL_API_KEY')
+      }
     })
 
   auth
@@ -93,17 +107,33 @@ export function registerAuth(program: Command): void {
     .description('Show authentication status')
     .option('--json', 'Print machine-readable JSON')
     .action(async (options: { json?: boolean }) => {
-      const source = process.env.CREATORCRAWL_API_KEY
-        ? 'environment'
-        : readStoredApiKey()
-          ? 'stored'
-          : null
-      if (options.json) {
-        console.log(JSON.stringify({ authenticated: source !== null, source }))
-      } else {
-        console.log(source ? `Authenticated using ${source} credentials.` : 'Not authenticated.')
+      const storedApiKey = readStoredApiKey()
+      const apiKey = process.env.CREATORCRAWL_API_KEY ?? storedApiKey
+      const source = process.env.CREATORCRAWL_API_KEY ? 'environment' : storedApiKey ? 'stored' : null
+      let authenticated = false
+      if (apiKey) {
+        try {
+          await verifyApiKey(apiKey)
+          authenticated = true
+        } catch {
+          authenticated = false
+        }
       }
-      if (!source) process.exitCode = 1
+      if (options.json) {
+        console.log(JSON.stringify({ authenticated, source }))
+      } else {
+        console.log(
+          authenticated
+            ? `Authenticated using ${source} credentials.`
+            : source
+              ? `Invalid ${source} credentials.`
+              : 'Not authenticated.',
+        )
+        if (source === 'environment' && storedApiKey) {
+          console.log('CREATORCRAWL_API_KEY overrides the saved credential.')
+        }
+      }
+      if (!authenticated) process.exitCode = 1
     })
 
   auth
