@@ -131,7 +131,7 @@ CREATORCRAWL_API_KEY=$NPM_TOKEN \
 ## Companion packages
 
 - **TypeScript SDK:** [`@creatorcrawl/sdk`](https://www.npmjs.com/package/@creatorcrawl/sdk) — for code workflows
-- **MCP server:** [`@creatorcrawl/mcp`](https://www.npmjs.com/package/@creatorcrawl/mcp) — for AI agents (Claude, Cursor, Windsurf)
+- **Hosted MCP endpoint:** [`https://app.creatorcrawl.com/api/mcp`](https://creatorcrawl.com/mcp-docs) — for compatible AI agents
 - **Agent Skill:** [`creatorcrawl/creatorcrawl-skill`](https://github.com/creatorcrawl/creatorcrawl-skill) — teaches agents how to use CreatorCrawl
 
 ## Pricing
