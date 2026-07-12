@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { CreatorCrawl, CreatorCrawlError } from '@creatorcrawl/sdk'
+import { CreatorCrawl } from '@creatorcrawl/sdk'
 import { Command } from 'commander'
 import { registerAuth, resolveCredential } from './auth'
 import { registerInstagram } from './commands/instagram'
@@ -16,7 +16,7 @@ program
   .description(
     'Scrape TikTok, Instagram, YouTube, LinkedIn, Twitter/X, and Reddit from your terminal.',
   )
-  .version('0.4.0')
+  .version('0.4.1')
   .option('-k, --api-key <key>', 'CreatorCrawl API key (or set CREATORCRAWL_API_KEY env)')
   .option('--pretty', 'Pretty-print JSON output (default: compact)')
 
@@ -45,10 +45,9 @@ export async function run(fn: () => Promise<unknown>): Promise<void> {
     const result = await fn()
     output(result)
   } catch (err) {
-    if (err instanceof CreatorCrawlError) {
-      console.error(`Error ${err.status}: ${err.message}`)
-    } else if (err instanceof Error) {
-      console.error(`Error: ${err.message}`)
+    if (err instanceof Error) {
+      const status = 'status' in err && typeof err.status === 'number' ? ` ${err.status}` : ''
+      console.error(`Error${status}: ${err.message}`)
     } else {
       console.error('Unknown error:', err)
     }

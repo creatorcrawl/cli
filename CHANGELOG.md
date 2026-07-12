@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.1
+
+- Corrected release type-checking for SDK errors.
+
 ## 0.4.0
 
 - Replaced interactive API-key paste with OAuth Authorization Code + PKCE browser login.
