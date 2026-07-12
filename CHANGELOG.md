@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.1
+
+- Fixed the published executable containing duplicate shebang lines.
+- Added the hosted `https://creatorcrawl.com/install.sh` installation path.
+
 ## 0.3.0
 
 **Breaking changes.**

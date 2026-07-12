@@ -12,6 +12,14 @@ npx creatorcrawl linkedin company https://www.linkedin.com/company/openai
 
 ## Install
 
+Install with the hosted script on macOS or Linux:
+
+```bash
+curl -fsSL https://creatorcrawl.com/install.sh | sh
+```
+
+The script downloads the self-contained release executable to `~/.local/bin/creatorcrawl` without requiring `sudo` or npm. It requires Node.js 18 or newer. Override `CREATORCRAWL_VERSION` or `CREATORCRAWL_BIN_DIR` when needed.
+
 Run instantly without installing:
 
 ```bash
