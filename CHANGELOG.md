@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.4
+
+- Corrected the credential validation endpoint used by CLI authentication.
+
 ## 0.3.3
 
 - Made interactive `auth login` always prompt instead of silently reusing an environment key.

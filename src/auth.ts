@@ -69,7 +69,7 @@ function validateApiKey(apiKey: string): void {
 }
 
 async function verifyApiKey(apiKey: string): Promise<void> {
-  const response = await fetch('https://app.creatorcrawl.com/api/auth/validate-key', {
+  const response = await fetch('https://app.creatorcrawl.com/api/validate-key', {
     headers: { 'x-api-key': apiKey },
   })
   if (!response.ok) {
