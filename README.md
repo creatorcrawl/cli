@@ -4,51 +4,50 @@
 
 Official command-line interface for [CreatorCrawl](https://creatorcrawl.com). Scrape **TikTok, Instagram, YouTube, LinkedIn, Twitter/X, and Reddit** from your terminal or shell scripts.
 
-```bash
-npx creatorcrawl tiktok profile khaby.lame
-npx creatorcrawl youtube transcript https://youtu.be/...
-npx creatorcrawl linkedin company https://www.linkedin.com/company/openai
-```
-
 ## Install
 
-Run instantly without installing:
+The standalone CLI is independent of the agent skill.
+
+On macOS or Linux:
 
 ```bash
-npx creatorcrawl@latest --help
-npx creatorcrawl@latest auth login
-npx creatorcrawl@latest tiktok profile khaby.lame
+curl -fsSL https://creatorcrawl.com/install.sh | sh
+creatorcrawl auth login
+creatorcrawl tiktok profile khaby.lame
 ```
 
-Node.js 18 or newer is required. Works on macOS, Linux, and Windows.
+The installer sets up Node.js if needed and writes the command to `~/.local/bin/creatorcrawl` without `sudo`.
+It installs only the CLI. Follow its PATH instructions if your shell cannot find the command.
+Override `CREATORCRAWL_VERSION` or `CREATORCRAWL_BIN_DIR` when needed.
+
+With Node.js 18+, run the verified release using npx on macOS, Linux, or Windows:
+
+```bash
+npx --yes --package=https://github.com/creatorcrawl/cli/releases/download/v0.4.2/creatorcrawl-0.4.2.tgz creatorcrawl --help
+npx --yes --package=https://github.com/creatorcrawl/cli/releases/download/v0.4.2/creatorcrawl-0.4.2.tgz creatorcrawl auth login
+```
 
 For a persistent command:
 
 ```bash
-npm install -g creatorcrawl
-# or
-pnpm add -g creatorcrawl
+npm install -g https://github.com/creatorcrawl/cli/releases/download/v0.4.2/creatorcrawl-0.4.2.tgz
+creatorcrawl --help
 ```
 
-On macOS or Linux, the hosted script also installs the agent-agnostic CreatorCrawl skill:
-
-```bash
-curl -fsSL https://creatorcrawl.com/install.sh | sh
-```
-
-It writes the self-contained CLI to `~/.local/bin/creatorcrawl` without requiring `sudo`.
-Override `CREATORCRAWL_VERSION` or `CREATORCRAWL_BIN_DIR` when needed.
+The updated npm package is awaiting publication; npm currently serves the older 0.3.0 release.
+Use the GitHub release commands above until publication completes.
 
 ## Agent skill
 
-Install the bundled skill for Claude Code, Codex, Cursor, and other coding agents:
+Install the API-only skill separately for Claude Code, Codex, Cursor, or another coding agent:
 
 ```bash
 npx skills add creatorcrawl/creatorcrawl-skill
 ```
 
-Choose your agent and installation scope, then ask it to sign in to CreatorCrawl.
-The skill includes its own CLI and research workflows, so no separate global CLI install is needed.
+Choose your agent and scope; add `--global` for use across projects.
+The skill includes API instructions, endpoint references, and research workflows.
+It calls REST directly using `CREATORCRAWL_API_KEY` in the agent environment; it does not install the CLI.
 
 ## Authenticate
 
@@ -145,7 +144,7 @@ for h in stoolpresidente khaby.lame zachking; do
 done
 
 # Use in CI / scripts
-CREATORCRAWL_API_KEY=$NPM_TOKEN \
+CREATORCRAWL_API_KEY=sk_live_... \
   creatorcrawl reddit subreddit-posts ProgrammerHumor
 ```
 
@@ -164,7 +163,7 @@ CREATORCRAWL_API_KEY=$NPM_TOKEN \
 
 ## Pricing
 
-Pay-as-you-go credits starting at $29 for 5,000 calls. Full pricing at [creatorcrawl.com/#pricing](https://creatorcrawl.com/#pricing).
+Pay-as-you-go credits starting at $29 for 5,000 credits. Full pricing at [creatorcrawl.com/#pricing](https://creatorcrawl.com/#pricing).
 
 ## License
 
