@@ -16,7 +16,7 @@ program
   .description(
     'Scrape TikTok, Instagram, YouTube, LinkedIn, Twitter/X, and Reddit from your terminal.',
   )
-  .version('0.4.1')
+  .version('0.4.2')
   .option('-k, --api-key <key>', 'CreatorCrawl API key (or set CREATORCRAWL_API_KEY env)')
   .option('--pretty', 'Pretty-print JSON output (default: compact)')
 

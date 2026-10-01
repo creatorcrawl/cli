@@ -7,17 +7,16 @@ settings:
 importers:
 
   .:
-    dependencies:
+    devDependencies:
       '@creatorcrawl/sdk':
         specifier: github:creatorcrawl/sdk-typescript#v0.3.2
         version: https://codeload.github.com/creatorcrawl/sdk-typescript/tar.gz/e9e16ebe702f8424e3d5db86d9d47cf7a61b8494
-      commander:
-        specifier: ^12.1.0
-        version: 12.1.0
-    devDependencies:
       '@types/node':
         specifier: ^24.10.0
         version: 24.13.3
+      commander:
+        specifier: ^12.1.0
+        version: 12.1.0
       tsup:
         specifier: ^8.3.5
         version: 8.5.1(tsx@4.22.0)(typescript@5.9.3)

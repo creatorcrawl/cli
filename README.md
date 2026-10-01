@@ -12,27 +12,32 @@ npx creatorcrawl linkedin company https://www.linkedin.com/company/openai
 
 ## Install
 
-Install with the hosted script on macOS or Linux:
-
-```bash
-curl -fsSL https://creatorcrawl.com/install.sh | sh
-```
-
-The script installs both the self-contained CLI and the agent-agnostic CreatorCrawl skill. It writes the CLI to `~/.local/bin/creatorcrawl` without requiring `sudo`. Node.js 18 or newer is required. Override `CREATORCRAWL_VERSION` or `CREATORCRAWL_BIN_DIR` when needed.
-
 Run instantly without installing:
 
 ```bash
-npx creatorcrawl <command>
+npx creatorcrawl@latest --help
+npx creatorcrawl@latest auth login
+npx creatorcrawl@latest tiktok profile khaby.lame
 ```
 
-Or install globally:
+Node.js 18 or newer is required. Works on macOS, Linux, and Windows.
+
+For a persistent command:
 
 ```bash
 npm install -g creatorcrawl
 # or
 pnpm add -g creatorcrawl
 ```
+
+On macOS or Linux, the hosted script also installs the agent-agnostic CreatorCrawl skill:
+
+```bash
+curl -fsSL https://creatorcrawl.com/install.sh | sh
+```
+
+It writes the self-contained CLI to `~/.local/bin/creatorcrawl` without requiring `sudo`.
+Override `CREATORCRAWL_VERSION` or `CREATORCRAWL_BIN_DIR` when needed.
 
 ## Authenticate
 
