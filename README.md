@@ -58,7 +58,7 @@ For interactive use, sign in through CreatorCrawl OAuth:
 creatorcrawl auth login
 ```
 
-The CLI opens your browser, uses Authorization Code + PKCE, stores OAuth credentials in macOS Keychain when available, and refreshes access automatically. For agents and CI, pass an API key non-interactively during installation:
+The CLI opens CreatorCrawl in your browser or prints a sign-in link. Sign in or create an account, approve access, and return to your terminal. No API key is required. It uses Authorization Code + PKCE, stores OAuth credentials in macOS Keychain when available, and refreshes access automatically. For agents and CI, pass an API key non-interactively during installation:
 
 ```bash
 curl -fsSL https://creatorcrawl.com/install.sh | CREATORCRAWL_API_KEY="sk_live_..." sh

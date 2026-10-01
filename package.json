@@ -40,7 +40,7 @@
     "dev": "tsx src/index.ts",
     "type-check": "tsc --noEmit",
     "prepublishOnly": "pnpm type-check && pnpm test",
-    "test": "pnpm build && node --test tests/package.test.mjs"
+    "test": "pnpm build && node --test tests/*.test.mjs"
   },
   "engines": {
     "node": ">=18"
