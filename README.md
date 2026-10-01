@@ -39,6 +39,17 @@ curl -fsSL https://creatorcrawl.com/install.sh | sh
 It writes the self-contained CLI to `~/.local/bin/creatorcrawl` without requiring `sudo`.
 Override `CREATORCRAWL_VERSION` or `CREATORCRAWL_BIN_DIR` when needed.
 
+## Agent skill
+
+Install the bundled skill for Claude Code, Codex, Cursor, and other coding agents:
+
+```bash
+npx skills add creatorcrawl/creatorcrawl-skill
+```
+
+Choose your agent and installation scope, then ask it to sign in to CreatorCrawl.
+The skill includes its own CLI and research workflows, so no separate global CLI install is needed.
+
 ## Authenticate
 
 For interactive use, sign in through CreatorCrawl OAuth:
