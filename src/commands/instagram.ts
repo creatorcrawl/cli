@@ -1,6 +1,7 @@
 import type { CreatorCrawl } from '@creatorcrawl/sdk'
 import type { Command } from 'commander'
 import { run } from '../index'
+import { parsePage } from '../options'
 
 export function registerInstagram(program: Command, getClient: () => Promise<CreatorCrawl>): void {
   const instagram = program.command('instagram').description('Instagram endpoints')
@@ -13,17 +14,25 @@ export function registerInstagram(program: Command, getClient: () => Promise<Cre
   instagram
     .command('basic-profile <userId>')
     .description('Get a basic Instagram profile by numeric user ID')
-    .action((userId: string) => run(async () => (await getClient()).instagram.basicProfile({ userId })))
+    .action((userId: string) =>
+      run(async () => (await getClient()).instagram.basicProfile({ userId })),
+    )
 
   instagram
     .command('posts <handle>')
     .description("Get an Instagram user's recent posts")
-    .action((handle: string) => run(async () => (await getClient()).instagram.posts({ handle })))
+    .option('--cursor <cursor>', 'Cursor from page.cursor in the previous response')
+    .action((handle: string, options: { cursor?: string }) =>
+      run(async () => (await getClient()).instagram.posts({ next_max_id: options.cursor, handle })),
+    )
 
   instagram
     .command('reels <handle>')
     .description("Get an Instagram user's recent reels")
-    .action((handle: string) => run(async () => (await getClient()).instagram.reels({ handle })))
+    .option('--cursor <cursor>', 'Cursor from page.cursor in the previous response')
+    .action((handle: string, options: { cursor?: string }) =>
+      run(async () => (await getClient()).instagram.reels({ max_id: options.cursor, handle })),
+    )
 
   instagram
     .command('post <url>')
@@ -33,7 +42,10 @@ export function registerInstagram(program: Command, getClient: () => Promise<Cre
   instagram
     .command('comments <url>')
     .description('Get comments on an Instagram post')
-    .action((url: string) => run(async () => (await getClient()).instagram.comments({ url })))
+    .option('--cursor <cursor>', 'Cursor from page.cursor in the previous response')
+    .action((url: string, options: { cursor?: string }) =>
+      run(async () => (await getClient()).instagram.comments({ ...options, url })),
+    )
 
   instagram
     .command('transcript <url>')
@@ -43,17 +55,24 @@ export function registerInstagram(program: Command, getClient: () => Promise<Cre
   instagram
     .command('highlights <handle>')
     .description("List an Instagram user's story highlights")
-    .action((handle: string) => run(async () => (await getClient()).instagram.storyHighlights({ handle })))
+    .action((handle: string) =>
+      run(async () => (await getClient()).instagram.storyHighlights({ handle })),
+    )
 
   instagram
     .command('highlight <id>')
     .description('Get the contents of one Instagram highlight by ID')
-    .action((id: string) => run(async () => (await getClient()).instagram.highlightsDetails({ id })))
+    .action((id: string) =>
+      run(async () => (await getClient()).instagram.highlightsDetails({ id })),
+    )
 
   instagram
     .command('search-reels <query>')
     .description('Search Instagram reels by keyword')
-    .action((query: string) => run(async () => (await getClient()).instagram.searchReels({ query })))
+    .option('--page <page>', 'Page number from page.cursor in the previous response', parsePage)
+    .action((query: string, options: { page?: string }) =>
+      run(async () => (await getClient()).instagram.searchReels({ ...options, query })),
+    )
 
   instagram
     .command('embed <handle>')

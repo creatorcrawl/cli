@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+- Added integration tests for all 58 data commands and 28 pagination paths.
+- Added `--cursor` / `--page` options and TikTok video sorting.
+- Preserve structured API error messages and reject malformed success responses.
+- Reject invalid OAuth token responses without overwriting saved credentials.
+- Run the complete test suite in CI and release workflows.
+
 ## 0.4.1
 
 - Corrected release type-checking for SDK errors.

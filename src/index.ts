@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { CreatorCrawl } from '@creatorcrawl/sdk'
+import { CreatorCrawl, CreatorCrawlError } from '@creatorcrawl/sdk'
 import { Command } from 'commander'
 import { registerAuth, resolveCredential } from './auth'
 import { registerInstagram } from './commands/instagram'
@@ -23,7 +23,9 @@ program
 async function getClient(): Promise<CreatorCrawl> {
   const opts = program.opts()
   const explicitApiKey = opts.apiKey as string | undefined
-  const credential = explicitApiKey ? { apiKey: explicitApiKey, source: 'environment' as const } : await resolveCredential()
+  const credential = explicitApiKey
+    ? { apiKey: explicitApiKey, source: 'environment' as const }
+    : await resolveCredential()
   if (!credential) {
     console.error('Error: authentication required. Run creatorcrawl auth login.')
     process.exit(1)
@@ -43,11 +45,31 @@ export function output(data: unknown): void {
 export async function run(fn: () => Promise<unknown>): Promise<void> {
   try {
     const result = await fn()
+    if (!result || typeof result !== 'object' || Array.isArray(result) || !('data' in result)) {
+      throw new Error('API returned an invalid response.')
+    }
     output(result)
   } catch (err) {
     if (err instanceof Error) {
       const status = 'status' in err && typeof err.status === 'number' ? ` ${err.status}` : ''
-      console.error(`Error${status}: ${err.message}`)
+      let message = err.message
+      if (
+        err instanceof CreatorCrawlError &&
+        err.response &&
+        typeof err.response === 'object' &&
+        'error' in err.response
+      ) {
+        const apiError = err.response.error
+        if (
+          apiError &&
+          typeof apiError === 'object' &&
+          'message' in apiError &&
+          typeof apiError.message === 'string'
+        ) {
+          message = apiError.message
+        }
+      }
+      console.error(`Error${status}: ${message}`)
     } else {
       console.error('Unknown error:', err)
     }

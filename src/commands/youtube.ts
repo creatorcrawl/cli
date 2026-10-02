@@ -13,12 +13,22 @@ export function registerYoutube(program: Command, getClient: () => Promise<Creat
   youtube
     .command('videos <handle>')
     .description("Get a YouTube channel's recent videos")
-    .action((handle: string) => run(async () => (await getClient()).youtube.channelVideos({ handle })))
+    .option('--cursor <cursor>', 'Cursor from page.cursor in the previous response')
+    .action((handle: string, options: { cursor?: string }) =>
+      run(async () =>
+        (await getClient()).youtube.channelVideos({ continuationToken: options.cursor, handle }),
+      ),
+    )
 
   youtube
     .command('shorts <handle>')
     .description("Get a YouTube channel's recent shorts")
-    .action((handle: string) => run(async () => (await getClient()).youtube.channelShorts({ handle })))
+    .option('--cursor <cursor>', 'Cursor from page.cursor in the previous response')
+    .action((handle: string, options: { cursor?: string }) =>
+      run(async () =>
+        (await getClient()).youtube.channelShorts({ continuationToken: options.cursor, handle }),
+      ),
+    )
 
   youtube
     .command('video <url>')
@@ -33,22 +43,39 @@ export function registerYoutube(program: Command, getClient: () => Promise<Creat
   youtube
     .command('comments <url>')
     .description('Get comments on a YouTube video')
-    .action((url: string) => run(async () => (await getClient()).youtube.comments({ url })))
+    .option('--cursor <cursor>', 'Cursor from page.cursor in the previous response')
+    .action((url: string, options: { cursor?: string }) =>
+      run(async () =>
+        (await getClient()).youtube.comments({ continuationToken: options.cursor, url }),
+      ),
+    )
 
   youtube
     .command('search <query>')
     .description('Search YouTube by keyword')
-    .action((query: string) => run(async () => (await getClient()).youtube.search({ query })))
+    .option('--cursor <cursor>', 'Cursor from page.cursor in the previous response')
+    .action((query: string, options: { cursor?: string }) =>
+      run(async () =>
+        (await getClient()).youtube.search({ continuationToken: options.cursor, query }),
+      ),
+    )
 
   youtube
     .command('search-hashtag <hashtag>')
     .description('Search YouTube by hashtag')
-    .action((hashtag: string) => run(async () => (await getClient()).youtube.searchHashtag({ hashtag })))
+    .option('--cursor <cursor>', 'Cursor from page.cursor in the previous response')
+    .action((hashtag: string, options: { cursor?: string }) =>
+      run(async () =>
+        (await getClient()).youtube.searchHashtag({ continuationToken: options.cursor, hashtag }),
+      ),
+    )
 
   youtube
     .command('playlist <playlist_id>')
     .description('Get YouTube playlist contents by playlist ID')
-    .action((playlist_id: string) => run(async () => (await getClient()).youtube.playlist({ playlist_id })))
+    .action((playlist_id: string) =>
+      run(async () => (await getClient()).youtube.playlist({ playlist_id })),
+    )
 
   youtube
     .command('trending-shorts')

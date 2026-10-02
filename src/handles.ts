@@ -14,5 +14,7 @@ export function normalizeTikTokHandle(input: string): string {
     return decodeURIComponent(segment.slice(1))
   }
 
-  return value.replace(/^@/, '')
+  const handle = value.replace(/^@/, '')
+  if (!handle) throw new Error('TikTok handle is required.')
+  return handle
 }

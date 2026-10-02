@@ -22,7 +22,7 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm type-check
-      - run: pnpm build
+      - run: pnpm test
       - run: cp dist/index.cjs creatorcrawl && chmod +x creatorcrawl
       - uses: softprops/action-gh-release@v2
         with:

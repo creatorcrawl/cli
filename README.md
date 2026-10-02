@@ -91,6 +91,24 @@ creatorcrawl reddit    search|subreddit|subreddit-posts|subreddit-search|comment
 
 Run `creatorcrawl <platform> --help` for subcommand details.
 
+## Pagination
+
+Paginated commands accept `--cursor` with the previous response's `page.cursor`.
+Commands that use page numbers accept `--page` instead. Check the command's `--help`.
+Each invocation fetches one page; stop collecting when `page.has_more` is false.
+
+```bash
+creatorcrawl tiktok videos luketriestech --sort latest
+creatorcrawl tiktok videos luketriestech --sort latest --cursor 'CURSOR_FROM_PREVIOUS_RESPONSE'
+creatorcrawl instagram posts example --cursor 'CURSOR_FROM_PREVIOUS_RESPONSE'
+creatorcrawl youtube videos example --cursor 'CURSOR_FROM_PREVIOUS_RESPONSE'
+creatorcrawl instagram search-reels 'tech reviews' --page 2
+```
+
+TikTok videos support `--sort latest` and `--sort popular`. Keep the same sort order
+while paging. Pagination options are available in builds from the main branch;
+the v0.4.2 release linked above does not include them yet.
+
 ## Output
 
 Default: compact JSON (greppable, pipeable).
@@ -154,6 +172,15 @@ CREATORCRAWL_API_KEY=sk_live_... \
 |---|---|---|
 | `-k`, `--api-key <key>` | `CREATORCRAWL_API_KEY` | Your CreatorCrawl API key |
 | `--pretty` | — | Pretty-print JSON output (default: compact) |
+
+## Development and tests
+
+Run `pnpm install --frozen-lockfile`, `pnpm type-check`, and `pnpm test`.
+The suite builds and executes the bundled CLI across every data command, including
+pagination, JSON output, API failures, credential precedence, and OAuth refresh.
+API responses come from an isolated local HTTP server; tests do not use live
+provider data, spend credits, or access your saved credentials. CI and release
+workflows run the same suite.
 
 ## Companion packages
 

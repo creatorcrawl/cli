@@ -39,7 +39,10 @@ function credentialsPath(): string {
 }
 
 function keychainAvailable(): boolean {
-  return process.platform === 'darwin' && spawnSync('security', ['help'], { stdio: 'ignore' }).status === 0
+  return (
+    process.platform === 'darwin' &&
+    spawnSync('security', ['help'], { stdio: 'ignore' }).status === 0
+  )
 }
 
 function readCredentials(): Credentials | undefined {
@@ -134,9 +137,31 @@ async function oauthRequest(path: string, body: URLSearchParams | Record<string,
   })
   const data = (await response.json()) as Record<string, unknown>
   if (!response.ok) {
-    throw new Error(String(data.error_description ?? data.error ?? `OAuth request failed (${response.status})`))
+    throw new Error(
+      String(data.error_description ?? data.error ?? `OAuth request failed (${response.status})`),
+    )
   }
   return data
+}
+
+async function oauthTokenRequest(body: URLSearchParams) {
+  const token = await oauthRequest('/oauth/token', body)
+  if (
+    typeof token.access_token !== 'string' ||
+    !token.access_token ||
+    typeof token.refresh_token !== 'string' ||
+    !token.refresh_token ||
+    typeof token.expires_in !== 'number' ||
+    !Number.isFinite(token.expires_in) ||
+    token.expires_in <= 0
+  ) {
+    throw new Error('OAuth returned an invalid token response.')
+  }
+  return {
+    accessToken: token.access_token,
+    refreshToken: token.refresh_token,
+    expiresAt: Date.now() + token.expires_in * 1000,
+  }
 }
 
 async function browserLogin(): Promise<OAuthCredentials> {
@@ -171,10 +196,13 @@ async function browserLogin(): Promise<OAuthCredentials> {
   }).toString()
 
   const codePromise = new Promise<string>((resolve, reject) => {
-    const timeout = setTimeout(() => {
-      callback.close()
-      reject(new Error('OAuth login timed out.'))
-    }, 5 * 60 * 1000)
+    const timeout = setTimeout(
+      () => {
+        callback.close()
+        reject(new Error('OAuth login timed out.'))
+      },
+      5 * 60 * 1000,
+    )
     callback.on('request', (request, response) => {
       const url = new URL(request.url ?? '/', redirectUri)
       if (url.pathname !== '/callback') {
@@ -202,8 +230,7 @@ async function browserLogin(): Promise<OAuthCredentials> {
   console.log(`If it does not open, visit:\n${authorizeUrl.toString()}`)
   openBrowser(authorizeUrl.toString())
   const code = await codePromise
-  const token = await oauthRequest(
-    '/oauth/token',
+  const token = await oauthTokenRequest(
     new URLSearchParams({
       grant_type: 'authorization_code',
       client_id: clientId,
@@ -215,15 +242,12 @@ async function browserLogin(): Promise<OAuthCredentials> {
   return {
     type: 'oauth',
     clientId,
-    accessToken: String(token.access_token),
-    refreshToken: String(token.refresh_token),
-    expiresAt: Date.now() + Number(token.expires_in) * 1000,
+    ...token,
   }
 }
 
 async function refreshOAuth(credentials: OAuthCredentials): Promise<OAuthCredentials> {
-  const token = await oauthRequest(
-    '/oauth/token',
+  const token = await oauthTokenRequest(
     new URLSearchParams({
       grant_type: 'refresh_token',
       client_id: credentials.clientId,
@@ -232,9 +256,7 @@ async function refreshOAuth(credentials: OAuthCredentials): Promise<OAuthCredent
   )
   const refreshed: OAuthCredentials = {
     ...credentials,
-    accessToken: String(token.access_token),
-    refreshToken: String(token.refresh_token),
-    expiresAt: Date.now() + Number(token.expires_in) * 1000,
+    ...token,
   }
   await saveCredentials(refreshed)
   return refreshed
@@ -260,7 +282,8 @@ export async function resolveCredential(): Promise<ResolvedCredential | undefine
 }
 
 function validateApiKey(apiKey: string): void {
-  if (!/^sk_live_[a-f0-9]{64}$/.test(apiKey)) throw new Error('Invalid CreatorCrawl API key format.')
+  if (!/^sk_live_[a-f0-9]{64}$/.test(apiKey))
+    throw new Error('Invalid CreatorCrawl API key format.')
 }
 
 export function registerAuth(program: Command): void {
