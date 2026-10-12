@@ -25,7 +25,7 @@ for (const entry of commands) {
       assert.equal(pretty.code, 0, pretty.stderr)
       assert.equal(pretty.stdout, `${JSON.stringify(f.response.body, null, 2)}\n`)
     })
-    for (const status of [401, 402, 429, 502]) {
+    for (const status of [401, 402, 429, 502, 503]) {
       await t.test(`HTTP ${status} exits nonzero with the API message on stderr`, async () => {
         f.response.status = status
         f.response.body = { error: { code: 'test_failure', message: `Request failed (${status})` } }

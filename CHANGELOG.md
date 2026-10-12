@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.4
+
+- Upgraded to SDK v0.3.4: upstream platform failures (now HTTP 503 from the API, previously 502) are reported as upstream errors with the API's message.
+
 ## 0.4.3
 
 - API requests, OAuth, and key validation now use `https://api.creatorcrawl.com` (SDK v0.3.3).

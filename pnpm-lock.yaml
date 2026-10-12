@@ -9,8 +9,8 @@ importers:
   .:
     devDependencies:
       '@creatorcrawl/sdk':
-        specifier: github:creatorcrawl/sdk-typescript#v0.3.3
-        version: https://codeload.github.com/creatorcrawl/sdk-typescript/tar.gz/d60cd6a45f2e1e6bf44558bd2f173a993fce14fd
+        specifier: github:creatorcrawl/sdk-typescript#v0.3.4
+        version: https://codeload.github.com/creatorcrawl/sdk-typescript/tar.gz/5297277ca0926d4dbe4f1e1b1960de3fad9498f7
       '@types/node':
         specifier: ^24.10.0
         version: 24.13.3
@@ -29,9 +29,9 @@ importers:
 
 packages:
 
-  '@creatorcrawl/sdk@https://codeload.github.com/creatorcrawl/sdk-typescript/tar.gz/d60cd6a45f2e1e6bf44558bd2f173a993fce14fd':
-    resolution: {tarball: https://codeload.github.com/creatorcrawl/sdk-typescript/tar.gz/d60cd6a45f2e1e6bf44558bd2f173a993fce14fd}
-    version: 0.3.3
+  '@creatorcrawl/sdk@https://codeload.github.com/creatorcrawl/sdk-typescript/tar.gz/5297277ca0926d4dbe4f1e1b1960de3fad9498f7':
+    resolution: {tarball: https://codeload.github.com/creatorcrawl/sdk-typescript/tar.gz/5297277ca0926d4dbe4f1e1b1960de3fad9498f7}
+    version: 0.3.4
     engines: {node: '>=18'}
 
   '@esbuild/aix-ppc64@0.27.7':
@@ -709,7 +709,7 @@ packages:
 
 snapshots:
 
-  '@creatorcrawl/sdk@https://codeload.github.com/creatorcrawl/sdk-typescript/tar.gz/d60cd6a45f2e1e6bf44558bd2f173a993fce14fd': {}
+  '@creatorcrawl/sdk@https://codeload.github.com/creatorcrawl/sdk-typescript/tar.gz/5297277ca0926d4dbe4f1e1b1960de3fad9498f7': {}
 
   '@esbuild/aix-ppc64@0.27.7':
     optional: true
