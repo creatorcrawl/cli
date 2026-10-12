@@ -149,7 +149,7 @@ test('expired OAuth refreshes once, persists rotated credentials and sends the n
   })
   const envelope = f.response.body
   f.response.handler = (request) =>
-    request.url.pathname === '/api/oauth/token'
+    request.url.pathname === '/oauth/token'
       ? {
           status: 200,
           body: { access_token: 'new-access', refresh_token: 'new-refresh', expires_in: 3600 },
@@ -197,7 +197,7 @@ test('failed or malformed OAuth refresh preserves credentials and never calls da
     assert.equal(result.code, 1)
     assert.equal(result.stdout, '')
     assert.equal(f.requests.length, 1)
-    assert.equal(f.requests[0].url.pathname, '/api/oauth/token')
+    assert.equal(f.requests[0].url.pathname, '/oauth/token')
     assert.deepEqual(JSON.parse(await readFile(f.credentialsPath, 'utf8')), stored)
   }
 })
@@ -214,10 +214,10 @@ test('auth status and logout use only isolated test credentials', async (t) => {
   const status = await f.run(['auth', 'status', '--json'], { CREATORCRAWL_API_KEY: '' })
   assert.equal(status.code, 0, status.stderr)
   assert.deepEqual(JSON.parse(status.stdout), { authenticated: true, source: 'oauth' })
-  assert.equal(f.requests[0].url.pathname, '/api/validate-key')
+  assert.equal(f.requests[0].url.pathname, '/validate-key')
   const logout = await f.run(['auth', 'logout'], { CREATORCRAWL_API_KEY: '' })
   assert.equal(logout.code, 0, logout.stderr)
-  assert.equal(f.requests[1].url.pathname, '/api/oauth/revoke')
+  assert.equal(f.requests[1].url.pathname, '/oauth/revoke')
   assert.equal(f.requests[1].method, 'POST')
   assert.deepEqual(Object.fromEntries(new URLSearchParams(f.requests[1].body)), {
     token: 'refresh',

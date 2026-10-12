@@ -14,7 +14,7 @@ test('browser login exchanges PKCE code and saves refreshable credentials withou
     fileURLToPath(new URL('../dist/index.cjs', import.meta.url)),
     'auth', 'login',
   ], { env: { ...process.env, XDG_CONFIG_HOME: directory, CREATORCRAWL_API_KEY: '' }, encoding: 'utf8', timeout: 10000 })
-  assert.match(output, /https:\/\/app\.creatorcrawl\.com\/api\/oauth\/authorize/)
+  assert.match(output, /https:\/\/api\.creatorcrawl\.com\/oauth\/authorize/)
   assert.match(output, /OAuth authentication saved securely/)
   const credentials = JSON.parse(readFileSync(join(directory, 'creatorcrawl/credentials.json'), 'utf8'))
   assert.equal(credentials.type, 'oauth')

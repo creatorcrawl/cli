@@ -185,7 +185,7 @@ workflows run the same suite.
 ## Companion packages
 
 - **TypeScript SDK:** [`@creatorcrawl/sdk`](https://www.npmjs.com/package/@creatorcrawl/sdk) — for code workflows
-- **Hosted MCP endpoint:** [`https://app.creatorcrawl.com/api/mcp`](https://creatorcrawl.com/mcp-docs) — for compatible AI agents
+- **Hosted MCP endpoint:** [`https://api.creatorcrawl.com/mcp`](https://creatorcrawl.com/mcp-docs) — for compatible AI agents
 - **Agent Skill:** [`creatorcrawl/creatorcrawl-skill`](https://github.com/creatorcrawl/creatorcrawl-skill) — teaches agents how to use CreatorCrawl
 
 ## Pricing

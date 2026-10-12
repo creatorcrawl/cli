@@ -8,7 +8,7 @@ import { spawn, spawnSync } from 'node:child_process'
 import type { AddressInfo } from 'node:net'
 import type { Command } from 'commander'
 
-const APP_URL = 'https://app.creatorcrawl.com'
+const API_URL = 'https://api.creatorcrawl.com'
 const KEYCHAIN_SERVICE = 'creatorcrawl-cli'
 const KEYCHAIN_ACCOUNT = 'oauth'
 
@@ -102,7 +102,7 @@ async function removeCredentials(): Promise<void> {
 }
 
 async function revokeOAuth(credentials: OAuthCredentials): Promise<void> {
-  await fetch(`${APP_URL}/api/oauth/revoke`, {
+  await fetch(`${API_URL}/oauth/revoke`, {
     method: 'POST',
     headers: { 'content-type': 'application/x-www-form-urlencoded' },
     body: new URLSearchParams({
@@ -130,7 +130,7 @@ function base64Url(input: Buffer): string {
 
 async function oauthRequest(path: string, body: URLSearchParams | Record<string, unknown>) {
   const isForm = body instanceof URLSearchParams
-  const response = await fetch(`${APP_URL}/api${path}`, {
+  const response = await fetch(`${API_URL}${path}`, {
     method: 'POST',
     headers: { 'content-type': isForm ? 'application/x-www-form-urlencoded' : 'application/json' },
     body: isForm ? body : JSON.stringify(body),
@@ -184,7 +184,7 @@ async function browserLogin(): Promise<OAuthCredentials> {
   const verifier = base64Url(randomBytes(48))
   const challenge = base64Url(createHash('sha256').update(verifier).digest())
   const state = base64Url(randomBytes(24))
-  const authorizeUrl = new URL(`${APP_URL}/api/oauth/authorize`)
+  const authorizeUrl = new URL(`${API_URL}/oauth/authorize`)
   authorizeUrl.search = new URLSearchParams({
     client_id: clientId,
     redirect_uri: redirectUri,
@@ -266,7 +266,7 @@ async function verifyCredential(credential: ResolvedCredential): Promise<boolean
   const headers: Record<string, string> = credential.accessToken
     ? { authorization: `Bearer ${credential.accessToken}` }
     : { 'x-api-key': credential.apiKey as string }
-  const response = await fetch(`${APP_URL}/api/validate-key`, { headers })
+  const response = await fetch(`${API_URL}/validate-key`, { headers })
   return response.ok
 }
 

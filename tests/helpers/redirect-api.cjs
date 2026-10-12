@@ -7,6 +7,6 @@ childProcess.spawnSync = (command, ...args) =>
   command === 'security' ? { status: 1 } : spawnSync(command, ...args)
 global.fetch = (input, options) => {
   const url = new URL(input)
-  assert.equal(url.origin, 'https://app.creatorcrawl.com')
+  assert.equal(url.origin, 'https://api.creatorcrawl.com')
   return fetch(new URL(url.pathname + url.search, process.env.CLI_TEST_ORIGIN), options)
 }

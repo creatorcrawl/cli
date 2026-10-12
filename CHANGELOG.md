@@ -1,7 +1,8 @@
 # Changelog
 
-## Unreleased
+## 0.4.3
 
+- API requests, OAuth, and key validation now use `https://api.creatorcrawl.com` (SDK v0.3.3).
 - Added integration tests for all 58 data commands and 28 pagination paths.
 - Added `--cursor` / `--page` options and TikTok video sorting.
 - Preserve structured API error messages and reject malformed success responses.
