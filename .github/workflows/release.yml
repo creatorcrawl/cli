@@ -11,6 +11,8 @@ permissions:
 jobs:
   release:
     runs-on: ubuntu-latest
+    env:
+      npm_config_store_dir: /home/runner/.pnpm-store
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
