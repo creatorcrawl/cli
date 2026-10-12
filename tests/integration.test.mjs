@@ -14,9 +14,14 @@ for (const entry of commands) {
     assert.equal(result.stdout, `${JSON.stringify(f.response.body)}\n`)
     assert.equal(f.requests.length, 1)
     const request = f.requests[0]
-    assert.equal(request.method, 'GET')
+    assert.equal(request.method, entry.method)
     assert.equal(request.url.pathname, entry.path)
-    assert.deepEqual(Object.fromEntries(request.url.searchParams), entry.query)
+    if (entry.method === 'POST') {
+      assert.deepEqual(Object.fromEntries(request.url.searchParams), {})
+      assert.deepEqual(JSON.parse(request.body), entry.query)
+    } else {
+      assert.deepEqual(Object.fromEntries(request.url.searchParams), entry.query)
+    }
     assert.equal(request.headers['x-api-key'], 'fixture-key')
     assert.equal(request.headers.authorization, undefined)
 
@@ -25,10 +30,15 @@ for (const entry of commands) {
       assert.equal(pretty.code, 0, pretty.stderr)
       assert.equal(pretty.stdout, `${JSON.stringify(f.response.body, null, 2)}\n`)
     })
-    for (const status of [401, 402, 429, 502, 503]) {
+    for (const status of [401, 402, 403, 429, 502, 503]) {
       await t.test(`HTTP ${status} exits nonzero with the API message on stderr`, async () => {
         f.response.status = status
-        f.response.body = { error: { code: 'test_failure', message: `Request failed (${status})` } }
+        f.response.body = {
+          error: {
+            code: status === 403 ? 'upstream_forbidden' : 'test_failure',
+            message: `Request failed (${status})`,
+          },
+        }
         const failure = await f.run(entry.args)
         assert.equal(failure.code, 1)
         assert.equal(failure.stdout, '')
@@ -56,7 +66,15 @@ for (const entry of commands) {
 
 test('the command matrix covers every advertised data command', async (t) => {
   const f = await fixture(t)
-  for (const platform of ['tiktok', 'instagram', 'youtube', 'linkedin', 'twitter', 'reddit']) {
+  for (const platform of [
+    'tiktok',
+    'instagram',
+    'youtube',
+    'linkedin',
+    'twitter',
+    'reddit',
+    'facebook',
+  ]) {
     const help = await f.run([platform, '--help'])
     assert.equal(help.code, 0)
     const names = [...help.stdout.split('Commands:')[1].matchAll(/^  ([a-z][a-z-]*)\b/gm)]
@@ -68,6 +86,7 @@ test('the command matrix covers every advertised data command', async (t) => {
       commands
         .filter((entry) => entry.args[0] === platform)
         .map((entry) => entry.args[1])
+        .filter((name, index, names) => names.indexOf(name) === index)
         .sort(),
     )
   }
@@ -137,6 +156,43 @@ for (const [platform, command, flag, parameter] of pagination) {
     })
   })
 }
+
+test('facebook ads-search sends filters and long cursors in a POST body', async (t) => {
+  const f = await fixture(t)
+  const cursor = 'A'.repeat(4000)
+  const result = await f.run([
+    'facebook',
+    'ads-search',
+    'nike',
+    '--country',
+    'US',
+    '--trim',
+    '--cursor',
+    cursor,
+  ])
+  assert.equal(result.code, 0, result.stderr)
+  assert.equal(f.requests[0].method, 'POST')
+  assert.equal(f.requests[0].headers['content-type'], 'application/json')
+  assert.deepEqual(JSON.parse(f.requests[0].body), {
+    query: 'nike',
+    country: 'US',
+    cursor,
+    trim: true,
+  })
+})
+
+test('invalid API key exits 1 with the API message and a login hint', async (t) => {
+  const f = await fixture(t)
+  f.response.status = 401
+  f.response.body = { success: false, error: 'Invalid API key' }
+  const result = await f.run(['facebook', 'profile', 'https://www.facebook.com/nike'])
+  assert.equal(result.code, 1)
+  assert.equal(result.stdout, '')
+  assert.equal(
+    result.stderr,
+    'Error 401: Invalid API key\nCheck your API key or run creatorcrawl auth login.\n',
+  )
+})
 
 test('expired OAuth refreshes once, persists rotated credentials and sends the new bearer token', async (t) => {
   const f = await fixture(t)

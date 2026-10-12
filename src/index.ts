@@ -1,7 +1,8 @@
 #!/usr/bin/env node
-import { CreatorCrawl, CreatorCrawlError } from '@creatorcrawl/sdk'
+import { AuthenticationError, CreatorCrawl, CreatorCrawlError } from '@creatorcrawl/sdk'
 import { Command } from 'commander'
 import { registerAuth, resolveCredential } from './auth'
+import { registerFacebook } from './commands/facebook'
 import { registerInstagram } from './commands/instagram'
 import { registerLinkedIn } from './commands/linkedin'
 import { registerReddit } from './commands/reddit'
@@ -14,9 +15,9 @@ const program = new Command()
 program
   .name('creatorcrawl')
   .description(
-    'Scrape TikTok, Instagram, YouTube, LinkedIn, Twitter/X, and Reddit from your terminal.',
+    'Scrape TikTok, Instagram, YouTube, LinkedIn, Twitter/X, Reddit, and Facebook from your terminal.',
   )
-  .version('0.4.4')
+  .version('0.4.5')
   .option('-k, --api-key <key>', 'CreatorCrawl API key (or set CREATORCRAWL_API_KEY env)')
   .option('--pretty', 'Pretty-print JSON output (default: compact)')
 
@@ -70,6 +71,9 @@ export async function run(fn: () => Promise<unknown>): Promise<void> {
         }
       }
       console.error(`Error${status}: ${message}`)
+      if (err instanceof AuthenticationError) {
+        console.error('Check your API key or run creatorcrawl auth login.')
+      }
     } else {
       console.error('Unknown error:', err)
     }
@@ -84,6 +88,7 @@ registerYoutube(program, getClient)
 registerLinkedIn(program, getClient)
 registerTwitter(program, getClient)
 registerReddit(program, getClient)
+registerFacebook(program, getClient)
 
 program.parseAsync().catch((err) => {
   console.error(err instanceof Error ? `Error: ${err.message}` : 'Unknown error')

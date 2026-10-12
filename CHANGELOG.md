@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4.5
+
+- Added `creatorcrawl facebook` with 22 commands covering all 24 Facebook endpoints: profiles, page posts/reels/photos/events, posts, comments, comment replies, transcripts, groups, group posts, city events, event search and details, Marketplace search/item/location, and Meta Ad Library ads, ad transcripts, ad search, company ads and company search. `ads-search` and `company-ads` use POST bodies for long cursors.
+- Upgraded to SDK v0.3.5. The API now returns HTTP 401 for missing or invalid API keys; the CLI prints the API message plus a login hint and exits 1. Upstream `403 upstream_forbidden` is reported as an upstream error.
+
 ## 0.4.4
 
 - Upgraded to SDK v0.3.4: upstream platform failures (now HTTP 503 from the API, previously 502) are reported as upstream errors with the API's message.

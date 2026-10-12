@@ -2,7 +2,7 @@
 
 > **0.3 returns the new canonical response shape — see the SDK changelog for details.**
 
-Official command-line interface for [CreatorCrawl](https://creatorcrawl.com). Scrape **TikTok, Instagram, YouTube, LinkedIn, Twitter/X, and Reddit** from your terminal or shell scripts.
+Official command-line interface for [CreatorCrawl](https://creatorcrawl.com). Scrape **TikTok, Instagram, YouTube, LinkedIn, Twitter/X, Reddit, and Facebook** from your terminal or shell scripts.
 
 ## Install
 
@@ -87,6 +87,10 @@ creatorcrawl youtube   channel|videos|shorts|video|search|transcript|comments|pl
 creatorcrawl linkedin  profile|company|company-posts|post|ads|ad
 creatorcrawl twitter   profile|tweet|tweets|transcript|community|community-tweets
 creatorcrawl reddit    search|subreddit|subreddit-posts|subreddit-search|comments
+creatorcrawl facebook  profile|profile-posts|profile-reels|profile-photos|profile-events
+                       post|post-comments|comment-replies|post-transcript|group|group-posts
+                       events|events-search|event|marketplace-search|marketplace-item
+                       marketplace-location|ad|ad-transcript|ads-search|company-ads|companies-search
 ```
 
 Run `creatorcrawl <platform> --help` for subcommand details.
@@ -96,6 +100,7 @@ Run `creatorcrawl <platform> --help` for subcommand details.
 Paginated commands accept `--cursor` with the previous response's `page.cursor`.
 Commands that use page numbers accept `--page` instead. Check the command's `--help`.
 Each invocation fetches one page; stop collecting when `page.has_more` is false.
+Facebook responses return the upstream cursor inside `data`; pass it back with `--cursor`. `facebook ads-search` and `facebook company-ads` send requests as POST bodies, so long Ad Library cursors work.
 
 ```bash
 creatorcrawl tiktok videos luketriestech --sort latest
@@ -155,6 +160,13 @@ creatorcrawl youtube search "ai tools" | jq '.data[:5]'
 
 # LinkedIn ad library lookup
 creatorcrawl linkedin ads stripe
+
+# Facebook page, Marketplace and Meta Ad Library
+creatorcrawl facebook profile https://www.facebook.com/nike
+creatorcrawl facebook marketplace-location "new york"
+creatorcrawl facebook marketplace-search bike --lat 40.7128 --lng -74.006
+creatorcrawl facebook ads-search nike --country US --status ACTIVE
+creatorcrawl facebook company-ads Nike
 
 # Loop over a list of handles
 for h in stoolpresidente khaby.lame zachking; do
