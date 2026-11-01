@@ -1,5 +1,10 @@
 # Changelog
 
+## [Unreleased]
+
+- `creatorcrawl tiktok trending` now requires the region argument; the API rejects requests without it.
+- `creatorcrawl youtube channel` now sends channel URLs as `url` and `UC...` channel IDs as `channelId` instead of always sending them as `handle`.
+
 ## 0.4.5
 
 - Added `creatorcrawl facebook` with 22 commands covering all 24 Facebook endpoints: profiles, page posts/reels/photos/events, posts, comments, comment replies, transcripts, groups, group posts, city events, event search and details, Marketplace search/item/location, and Meta Ad Library ads, ad transcripts, ad search, company ads and company search. `ads-search` and `company-ads` use POST bodies for long cursors.

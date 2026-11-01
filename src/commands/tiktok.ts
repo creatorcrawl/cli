@@ -163,9 +163,9 @@ export function registerTiktok(program: Command, getClient: () => Promise<Creato
     )
 
   tiktok
-    .command('trending [region]')
+    .command('trending <region>')
     .description('Current TikTok trending feed for a region (e.g. US)')
-    .action((region?: string) =>
+    .action((region: string) =>
       run(async () => (await getClient()).tiktok.trendingFeed({ region })),
     )
 }

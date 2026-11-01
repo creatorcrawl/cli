@@ -174,5 +174,5 @@ export const commands = [
   method,
   path,
   query,
-  required: command === 'trending' ? 0 : Object.keys(query).length,
+  required: Object.keys(query).length,
 }))

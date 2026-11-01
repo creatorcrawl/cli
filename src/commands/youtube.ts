@@ -6,9 +6,19 @@ export function registerYoutube(program: Command, getClient: () => Promise<Creat
   const youtube = program.command('youtube').description('YouTube endpoints')
 
   youtube
-    .command('channel <handle>')
-    .description('Get a YouTube channel by handle (or pass an @handle or channelId)')
-    .action((handle: string) => run(async () => (await getClient()).youtube.channel({ handle })))
+    .command('channel <handle-url-or-channel-id>')
+    .description('Get a YouTube channel by @handle, channel URL, or channel ID (UC...)')
+    .action((value: string) =>
+      run(async () =>
+        (await getClient()).youtube.channel(
+          /^https?:\/\//i.test(value)
+            ? { url: value }
+            : /^UC[\w-]{22}$/.test(value)
+              ? { channelId: value }
+              : { handle: value },
+        ),
+      ),
+    )
 
   youtube
     .command('videos <handle>')
