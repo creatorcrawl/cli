@@ -2,6 +2,7 @@
 
 ## [Unreleased]
 
+- Added 22 LinkedIn commands: `search-people`, `profile-by-email`, `profile-email`, `profile-posts`, `profile-comments`, `profile-reactions`, `search-companies`, `company-people-stats`, `company-insights`, `search-accounts`, `search-leads`, `job`, `search-jobs`, `search-location`, `search-posts`, `post-comments`, `comment-replies`, `post-reactions`, `comment-reactions`, `group`, `search-groups`, and `search-services`. Filters are flags named after the API query parameters in kebab case, e.g. `--current-company`, `--geo-id`, `--posted-limit`.
 - `creatorcrawl tiktok trending` now requires the region argument; the API rejects requests without it.
 - `creatorcrawl youtube channel` now sends channel URLs as `url` and `UC...` channel IDs as `channelId` instead of always sending them as `handle`.
 

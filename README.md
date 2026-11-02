@@ -84,7 +84,12 @@ Use `creatorcrawl auth status --json` to check authentication and `creatorcrawl 
 creatorcrawl tiktok    profile|videos|video|transcript|search|users|comments
 creatorcrawl instagram profile|posts|post|reels|comments|transcript
 creatorcrawl youtube   channel|videos|shorts|video|search|transcript|comments|playlist
-creatorcrawl linkedin  profile|company|company-posts|post|ads|ad
+creatorcrawl linkedin  profile|company|company-posts|post|ads|ad|search-people|profile-by-email
+                       profile-email|profile-posts|profile-comments|profile-reactions
+                       search-companies|company-people-stats|company-insights|search-accounts
+                       search-leads|job|search-jobs|search-location|search-posts|post-comments
+                       comment-replies|post-reactions|comment-reactions|group|search-groups
+                       search-services
 creatorcrawl twitter   profile|tweet|tweets|transcript|community|community-tweets
 creatorcrawl reddit    search|subreddit|subreddit-posts|subreddit-search|comments
 creatorcrawl facebook  profile|profile-posts|profile-reels|profile-photos|profile-events
@@ -160,6 +165,11 @@ creatorcrawl youtube search "ai tools" | jq '.data[:5]'
 
 # LinkedIn ad library lookup
 creatorcrawl linkedin ads stripe
+
+# LinkedIn people, jobs, and email lookups
+creatorcrawl linkedin search-people --title CTO --location London
+creatorcrawl linkedin search-jobs --search "data engineer" --workplace-type remote
+creatorcrawl linkedin profile-email https://www.linkedin.com/in/williamhgates/
 
 # Facebook page, Marketplace and Meta Ad Library
 creatorcrawl facebook profile https://www.facebook.com/nike
